@@ -13,7 +13,7 @@ uint8_t Flash_WriteBank (uint32_t address, uint32_t *data){
 	
 }
 
-uint8_t Flash_ReadWord (uint32_t address, uint32_t *data){
+uint32_t Flash_ReadWord (uint32_t address){
 	
 }
 

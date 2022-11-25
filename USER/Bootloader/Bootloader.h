@@ -21,10 +21,34 @@
 #define TEMP_PROG_ADDRESS		(0x08009000)
 
 
+typedef union {
+    uint32_t dataFlash;
+    struct 
+    {
+        uint16_t major;
+        uint16_t minor;
+    } version;
+} bootVersion_t;
 
-uint8_t Bootloader_Init (void);
+typedef enum{
+    Init = 0,
+    CheckDiff,
+    CheckSum,
+    CopyTmp2Src,
+    Jmp2Main
+} bootStages_t;
+
+typedef enum{
+    CurrentProg = 0,
+    NextProg,
+} bootProgram_t;
+
+
+
+void Bootloader_Init (void);
 uint8_t Bootloader_CheckDiffVersion (void);
-uint8_t Bootloader_CheckSum (void);
+uint8_t Bootloader_GetCheckSum (bootProgram_t prog);
+uint8_t Bootloader_CalCheckSum (bootProgram_t prog);
 void 	Bootloader_GotoProgram (void);
 uint8_t Bootloader_CopyTemp2Main (void);
 

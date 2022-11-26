@@ -7,8 +7,6 @@ static bootStages_t gBootloaderStatic = Init;
  * 
  */
 void Bootloader_Init (void){
-	SystemInit();
-	SystemCoreClockUpdate();
 	Flash_InitData();
 }
 

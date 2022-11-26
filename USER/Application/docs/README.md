@@ -62,3 +62,12 @@
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |0xAA|0x55|0x00|0x02|**0x07**|CRC|
 
+---
+## Process of OTA
+1. Send Start OTA to clear all Flash of Temp Area
+1. Send data for OTA. Each message must contain **4 x n** bytes (32 bits). The data of OTA must contain Checksum for each packages.
+1. Send the length of the binary file for compared between the received and the sended.
+1. Send the checksum of the binary file for compared between the received and the sended.
+1. Send the version of the binary file for save in Flash.
+1. After sending all packages, length, and checksum, send the Stop OTA message to calculate the checksum of all data that has been received.
+1. Send the Reboot Message for start OTA processing from Bootloader of IC.

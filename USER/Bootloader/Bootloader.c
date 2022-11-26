@@ -7,8 +7,6 @@ static bootStages_t gBootloaderStatic = Init;
  * 
  */
 void Bootloader_Init (void){
-	SystemInit();
-	SystemCoreClockUpdate();
 	Flash_InitData();
 }
 
@@ -101,9 +99,9 @@ uint8_t Bootloader_CalCheckSum (bootProgram_t prog){
  * @brief Go to the current program of IC.
  * 
  */
-void 	Bootloader_GotoProgram (void){
-	void (*funcGotoProg)(void) = (void*)(*((volatile uint32_t*) (MAIN_PROG_ADDRESS + 4U)));
-	
+void 	Bootloader_GotoProgram (uint32_t address){
+	void (*funcGotoProg)(void) = (void*)(*((volatile uint32_t*) (address + 4U)));
+	__set_MSP(*((volatile uint32_t*) address));
 	funcGotoProg();
 }
 

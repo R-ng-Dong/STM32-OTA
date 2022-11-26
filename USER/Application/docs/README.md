@@ -50,7 +50,7 @@
 **Checksum of OTA**
 |B01 |B02 |B03 |B04 |B05 |B06|B07|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|0xAA|0x55|0x00|0x03|**0x05**|CRC|CRC|
+|0xAA|0x55|0x00|0x03|**0x05**|Checksum|CRC|
 
 **Version of OTA**
 |B01 |B02 |B03 |B04 |B05 |B06|B07|B08|

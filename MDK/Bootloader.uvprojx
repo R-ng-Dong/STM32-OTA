@@ -425,6 +425,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>AppTest</GroupName>
+          <Files>
+            <File>
+              <FileName>RingBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\RingBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART_Receive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\UART_Receive.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>

@@ -7,7 +7,9 @@
 	"settings": {
 		"files.associations": {
 			"include.h": "c",
-			"flash.h": "c"
+			"flash.h": "c",
+			"uart_receive.h": "c",
+			"ringbuffer.h": "c"
 		}
 	}
 }

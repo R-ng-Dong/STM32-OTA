@@ -49,7 +49,7 @@ void Bootloader_Init (void);
 uint8_t Bootloader_CheckDiffVersion (void);
 uint8_t Bootloader_GetCheckSum (bootProgram_t prog);
 uint8_t Bootloader_CalCheckSum (bootProgram_t prog);
-void 	Bootloader_GotoProgram (void);
+void 	Bootloader_GotoProgram (uint32_t address);
 uint8_t Bootloader_CopyTemp2Main (void);
 
 

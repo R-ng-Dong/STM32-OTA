@@ -4,6 +4,8 @@ static USART_InitTypeDef 	USART_InitStructure;
 static GPIO_InitTypeDef 	GPIO_InitStructure;
 static NVIC_InitTypeDef  	NVIC_InitStructure;
 
+static void (*callbackIrqFnc)(char data);
+
 struct __FILE
 {
   int handle;
@@ -48,14 +50,6 @@ void UARTDebug_Init (uint32_t baudrate){
 	USART_ClearFlag(USART2, USART_IT_RXNE);
 	USART_ITConfig(USART2, USART_IT_RXNE ,ENABLE);// Cho phep ngat
 	USART_Cmd(USART2, ENABLE);
-	
-	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-	
-	NVIC_EnableIRQ(USART1_IRQn);
 }
 
 void UARTDebug_SendChar (char data){
@@ -70,10 +64,24 @@ void UARTDebug_SendString (char *string){
 	}
 }
 
-void USART1_IRQHandler (void){
-	if(USART_GetFlagStatus(USART1, USART_IT_RXNE) != RESET){
-		//USART_ReceiveData(USART1);
-		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+void UARTDebug_AddCallBack (void (*func)(char data)){
+	callbackIrqFnc = func;
+	
+	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+	
+	NVIC_EnableIRQ(USART2_IRQn);
+}
+
+void USART2_IRQHandler (void){
+	char tmpData;
+	if(USART_GetFlagStatus(USART2, USART_IT_RXNE) != RESET){
+		tmpData = USART_ReceiveData(USART2);
+		callbackIrqFnc(tmpData);
+		USART_ClearITPendingBit(USART2,USART_IT_RXNE);
 	}
 }
 

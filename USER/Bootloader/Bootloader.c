@@ -7,7 +7,7 @@ static bootStages_t gBootloaderStatic = Init;
  * 
  */
 void Bootloader_Init (void){
-	Flash_InitData();
+	MemInterface_Init();
 }
 
 /**
@@ -20,8 +20,8 @@ uint8_t Bootloader_CheckDiffVersion (void){
 	bootVersion_t currentVerion;
 	bootVersion_t nextVersion;
 	
-	currentVerion.dataFlash = Flash_ReadWord(BOOTLOADER_CURRENT_VER);
-	nextVersion.dataFlash = Flash_ReadWord(BOOTLOADER_PROGNEXT_VER);
+	currentVerion.dataFlash = MemInterface_getCurrentVersion();
+	nextVersion.dataFlash = MemInterface_getTempVersion();
 
 	if(currentVerion.dataFlash != nextVersion.dataFlash){
 		return 1;
@@ -41,10 +41,10 @@ uint8_t Bootloader_GetCheckSum (bootProgram_t prog){
 	uint8_t checksum = 0;
 
 	if(prog == CurrentProg){
-		checksum = Flash_ReadWord(BOOTLOADER_CURRENT_CRC) & 0xFF;
+		checksum = MemInterface_getCurrentCRC();
 	}
 	else{
-		checksum = Flash_ReadWord(BOOTLOADER_PROGNEXT_CRC) & 0xFF;
+		checksum = MemInterface_getTempCRC();
 	}
 
 	return checksum;
@@ -71,7 +71,7 @@ uint8_t Bootloader_CalCheckSum (bootProgram_t prog){
 		startDataAddress = MAIN_PROG_ADDRESS;
 	}
 	else{
-		lengthProgram = Flash_ReadWord(BOOTLOADER_PROGNEXT_LEN);
+		lengthProgram = Flash_ReadWord(BOOTLOADER_TEMP_LEN);
 		startDataAddress = TEMP_PROG_ADDRESS;
 	}
 

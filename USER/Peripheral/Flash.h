@@ -3,7 +3,15 @@
 
 #include "../Common/include.h"
 
-#define FLASH_BLOCK_SIZE    (1024)
+#define FLASH_BLOCK_SIZE    	(2048)
+#define FLASH_WORD_PER_BLOCK	(FLASH_BLOCK_SIZE/4)
+
+#define FLASH_DEBUG 0
+#if FLASH_DEBUG
+#define flashDebug(...) printf("[FLASH]"); printf(__VA_ARGS__)
+#else
+	#define flashDebug(...)
+#endif
 
 
 void Flash_InitData (void);

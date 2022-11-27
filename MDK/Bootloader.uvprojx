@@ -413,14 +413,14 @@
               <FilePath>..\USER\Bootloader\main.c</FilePath>
             </File>
             <File>
-              <FileName>CopyProgram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\Bootloader\CopyProgram.c</FilePath>
-            </File>
-            <File>
               <FileName>Bootloader.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\Bootloader\Bootloader.c</FilePath>
+            </File>
+            <File>
+              <FileName>MemoryInterface.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Bootloader\MemoryInterface.c</FilePath>
             </File>
           </Files>
         </Group>

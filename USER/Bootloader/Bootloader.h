@@ -1,11 +1,25 @@
+/**
+ * @file Bootloader.h
+ * @author Duan Luong (duanlc@ptit.edu.vn)
+ * @brief 
+ * @version 0.1
+ * @date 2022-11-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef _BOOTLOADER_
 #define _BOOTLOADER_
 
 #include "../Common/include.h"
 #include "MemoryInterface.h"
 
-
-
+#define BOOTLOADER_DEBUG 1
+#if 	BOOTLOADER_DEBUG
+#define bootloaderDebug(...) printf("[BOOTLOADER]"); printf(__VA_ARGS__)
+#else
+	#define bootloaderDebug(...)
+#endif
 
 typedef union {
     uint32_t dataFlash;
@@ -30,12 +44,11 @@ typedef enum{
 
 
 
-void Bootloader_Init (void);
+void    Bootloader_Init (void);
 uint8_t Bootloader_CheckDiffVersion (void);
-uint8_t Bootloader_GetCheckSum (bootProgram_t prog);
-uint8_t Bootloader_CalCheckSum (bootProgram_t prog);
-void 	Bootloader_GotoProgram (uint32_t address);
+void 	Bootloader_RunProgram (void);
 uint8_t Bootloader_CopyTemp2Main (void);
+void 	Bootloader_Processing (void);
 
 
 

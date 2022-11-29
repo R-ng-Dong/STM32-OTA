@@ -2,12 +2,18 @@
 
 
 static uint32_t tmpMemoryData[FLASH_WORD_PER_BLOCK];
+static uint32_t tmpBackupData[FLASH_WORD_PER_BLOCK];
 
 void MemInterface_Init(void){
     Flash_InitData();
 }
 
 /* Information of Current firmware*/
+/**
+ * @brief Get the version of the current firmware
+ * 
+ * @return uint32_t version as uint32_t (Can convert to Major and Minor version)
+ */
 uint32_t MemInterface_getCurrentVersion(void){
     uint32_t version;
 
@@ -16,11 +22,20 @@ uint32_t MemInterface_getCurrentVersion(void){
     return version;
 }
 
+/**
+ * @brief set the version for the current firmware
+ * 
+ * @param version version of the current firmware (Can convert from Major and Minor version)
+ */
 void MemInterface_setCurrentVersion(uint32_t version){
     Flash_WriteWord(BOOTLOADER_CURRENT_VER, version);
 }
 
-
+/**
+ * @brief get the length (size) of the current firmware
+ * 
+ * @return uint32_t size of the firmware (word)
+ */
 uint32_t MemInterface_getCurrentFirmLength(void){
     uint32_t length;
 
@@ -29,10 +44,21 @@ uint32_t MemInterface_getCurrentFirmLength(void){
     return length;
 }
 
+/**
+ * @brief set the length (size) for the current firmware
+ * 
+ * @param length size of the firmware (word)
+ */
 void MemInterface_setCurrentFirmLength(uint32_t length){
     Flash_WriteWord(BOOTLOADER_CURRENT_LEN, length);
 }
 
+
+/**
+ * @brief get the CRC of the current firmware
+ * 
+ * @return uint8_t CRC of the current firmware (Save in Flash)
+ */
 uint8_t MemInterface_getCurrentCRC(void){
     uint8_t crc;
 
@@ -41,6 +67,11 @@ uint8_t MemInterface_getCurrentCRC(void){
     return crc;
 }
 
+/**
+ * @brief set the CRC of the current firmware (Save in Flash)
+ * 
+ * @param crc Check Sum
+ */
 void MemInterface_setCurrentCRC(uint8_t crc){
     uint32_t crcTemp = 0;
 
@@ -51,6 +82,11 @@ void MemInterface_setCurrentCRC(uint8_t crc){
 
 
 /* Information of Temp firmware*/
+/**
+ * @brief Get the version of temp firmware
+ * 
+ * @return uint32_t version of the temp firmware (Can convert from Major and Minor version)
+ */
 uint32_t MemInterface_getTempVersion(void){
     uint32_t version;
 
@@ -59,11 +95,21 @@ uint32_t MemInterface_getTempVersion(void){
     return version;
 }
 
+/**
+ * @brief set the version of temp firmware
+ * 
+ * @param version version of the temp firmware (In Flash)
+ */
 void MemInterface_setTempVersion(uint32_t version){
     Flash_WriteWord(BOOTLOADER_TEMP_VER, version);
 }
 
 
+/**
+ * @brief get the length (size) of the temp firmware
+ * 
+ * @return uint32_t size of the temp firmware
+ */
 uint32_t MemInterface_getTempFirmLength(void){
     uint32_t length;
 
@@ -72,10 +118,21 @@ uint32_t MemInterface_getTempFirmLength(void){
     return length;
 }
 
+
+/**
+ * @brief set the length (size) of the temp firmware
+ * 
+ * @param length size of the temp firmware
+ */
 void MemInterface_setTempFirmLength(uint32_t length){
     Flash_WriteWord(BOOTLOADER_TEMP_LEN, length);
 }
 
+/**
+ * @brief get the CRC for the temp firmware
+ * 
+ * @return uint8_t CRC in Flash
+ */
 uint8_t MemInterface_getTempCRC(void){
     uint8_t crc;
 
@@ -84,6 +141,11 @@ uint8_t MemInterface_getTempCRC(void){
     return crc;
 }
 
+/**
+ * @brief set the CRC for the temp firmware (In Flash)
+ * 
+ * @param crc CRC of firmware
+ */
 void MemInterface_setTempCRC(uint8_t crc){
     uint32_t crcTemp = 0;
 
@@ -99,6 +161,15 @@ typedef struct{
     uint32_t nbrWords;
 } blockData_t;
 
+
+/**
+ * @brief calculate Number of Block need to be access.
+ * 
+ * @param startAddress First address of data needed to be access
+ * @param length Bumber of word be accessed
+ * @return blockData_t Information for access to process (Include: Start Address of first block, Location of data in Fist Block,
+ * Number of blocks need to be access, Number of words need to be access)
+ */
 static blockData_t calculatedNbrBlocks(uint32_t startAddress, uint32_t  length){
     blockData_t tmpData;
     uint32_t    endAddress = startAddress + length*4;
@@ -118,6 +189,13 @@ static blockData_t calculatedNbrBlocks(uint32_t startAddress, uint32_t  length){
     return tmpData;
 }
 
+/**
+ * @brief Write some words to the Flash memory
+ * 
+ * @param address start address are written
+ * @param data buffer data be written
+ * @param length number of words to write
+ */
 void MemInterface_writeProgram(uint32_t address, uint32_t *data, uint32_t length){
     blockData_t tmpData;
     uint32_t countBlock;
@@ -174,8 +252,45 @@ void MemInterface_writeProgram(uint32_t address, uint32_t *data, uint32_t length
 	memoryDebug("Written done %d times\n", countTimes);
 }
 
+/**
+ * @brief Copy whole from from a block to another memory block
+ * 
+ * @param source source address
+ * @param destination destination address
+ * @param length number of words to copy
+ */
 void MemInterface_copyProgram(uint32_t source, uint32_t destination, uint32_t length){
-
+	uint32_t nbrBlock;
+	uint8_t	 count;
+	uint32_t exitData = length;
+	
+	if( ((source % FLASH_BLOCK_SIZE) != 0) || \
+		((destination % FLASH_BLOCK_SIZE) != 0)){
+		memoryDebug("Wrong address!\n");
+		return;
+	}
+	
+	nbrBlock = (length + FLASH_BLOCK_SIZE - 1)/FLASH_BLOCK_SIZE;
+	for(count = 0; count < nbrBlock; count++){
+		if(exitData >= FLASH_BLOCK_SIZE){
+			memoryDebug("Case 01\n");
+			Flash_ReadBank(source, tmpBackupData);
+			Flash_WriteBank(destination, tmpBackupData);
+			exitData -= FLASH_BLOCK_SIZE;
+			source += FLASH_BLOCK_SIZE;
+			destination += FLASH_BLOCK_SIZE;
+		}
+		else{
+			memoryDebug("Case 02\n");
+			Flash_ReadBank(source, tmpBackupData);
+			MemInterface_writeProgram(destination, tmpBackupData, exitData);
+			source += exitData * 4;
+			destination += exitData * 4;
+			exitData = 0;
+		}
+		
+	}
+	memoryDebug("Copy done!\n");
 }
 
 

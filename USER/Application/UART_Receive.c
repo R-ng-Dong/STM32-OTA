@@ -8,7 +8,7 @@ static ringbuffer_t uartRingBuffer;
 
 
 void uartReceive_Init(void){
-    ringBuffer_Init(&uartRingBuffer, MAXLENGTHSTRING_QDB, sizeof(char));
+    ringBuffer_Init(&uartRingBuffer, uartDataBuffer, MAXLENGTHSTRING_QDB);
 }
 
 

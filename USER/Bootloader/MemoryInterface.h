@@ -20,7 +20,7 @@
 #define MAIN_PROG_ADDRESS		(0x08004000)
 #define TEMP_PROG_ADDRESS		(0x08028000)
 
-#define MEMORY_INTERFACE_DEBUG 1
+#define MEMORY_INTERFACE_DEBUG 0
 #if MEMORY_INTERFACE_DEBUG
 #define memoryDebug(...) printf("[MEMORY_INTERFACE]"); printf(__VA_ARGS__)
 #else

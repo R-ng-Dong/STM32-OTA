@@ -31,7 +31,7 @@ bool ringBuffer_Push(ringbuffer_t *bfData, uint8_t byte){
         return false;
     }
 
-    memcpy(bfData->head, byte, bfData->size);
+    memcpy(bfData->head, &byte, bfData->size);
     bfData->head = (char *)(bfData->head) + bfData->size;
     if (bfData->head == bfData->buffer_end){
         bfData->head = bfData->buffer;

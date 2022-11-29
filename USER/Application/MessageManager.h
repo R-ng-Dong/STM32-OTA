@@ -16,9 +16,16 @@
 #include "RingBuffer.h"
 #include "UART_Receive.h"
 
+#define messageMU_DEBUG 0
+#if messageMU_DEBUG
+#define mmuDebug(...) printf("[MMU]"); printf(__VA_ARGS__)
+#else
+	#define mmuDebug(...)
+#endif
+
 #define TEMPBUFF_LENGTH		(261)
 #define MESSAGE_MAXLENGTH	(256)
-#define MESSAGE_HEADLENGTH	(5)
+#define MESSAGE_HEADLENGTH	(4)
 #define MESSAGE_OFFSET      (4)
 
 typedef struct IncomingData{

@@ -6,6 +6,9 @@
 #include "../Application/UART_OTA.h"
 
 int main (void){
+	uint16_t i;
+	uint8_t dataTemp;
+	
 	SystemInit();
 	SystemCoreClockUpdate();
 	
@@ -13,9 +16,9 @@ int main (void){
 	UARTDebug_Init(115200);
 	uartReceive_Init();
 	UARTDebug_AddCallBack((void *)(&uartReceive_PushData));
-	
-	Bootloader_Init();
-	Bootloader_Processing();
+	printf("\n------------\nGo to proram!\n");
+	//Bootloader_Init();
+	//Bootloader_Processing();
 	
 	UART_OTA_Init();
 

@@ -34,8 +34,8 @@
 
 
 typedef struct otaDataFrame{
-    uint16_t 	Location;
-	uint16_t 	Length;
+    uint8_t 	Location[4];
+	uint8_t 	Length[2];
 	uint8_t		Message[MESSAGE_MAXLENGTH];
 } otaDataFrame_t;
 

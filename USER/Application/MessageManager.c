@@ -20,24 +20,32 @@ void MessageProcess_Process(void){
 
     if(!checkNow){
         if(guartRingBuffer.count > 0){
+			mmuDebug("Has new byte!\n");
             if(updateLasted == false){
+				//mmuDebug("Not lasted update!\n");
                 if(restartMessage == true){
+					//mmuDebug("Restart update!\n");
                     if(guartRingBuffer.count >= MESSAGE_HEADLENGTH){
+						
+						mmuDebug("Write 4 bytes data:");
+
                         for(i = 0; i < MESSAGE_HEADLENGTH; i++){
                             ringBuffer_Pop(&guartRingBuffer, &tempBuffer[i]);
+							//printf("0x%2x-", tempBuffer[i]);
                         }
-                        messageLength = (messageInput->Length[0]<<8) | messageInput->Length[1];
-                        messageHeader = messageInput->Header;
-
+#if messageMU_DEBUG
+						mmuDebug("\n");
+#endif
+						
+						updateLasted = false;
                         messageUpdate = true;
                         restartMessage = false;
                     }
                     
                 }
                 else{
+					mmuDebug("No restart update!\n");
                     ringBuffer_Pop(&guartRingBuffer, &tempBuffer[MESSAGE_HEADLENGTH - 1]);
-                    messageLength = (messageInput->Length[0]<<8) | messageInput->Length[1];
-                    messageHeader = messageInput->Header;
 
                     messageUpdate = true;
                 }
@@ -45,26 +53,39 @@ void MessageProcess_Process(void){
 
                 if(messageUpdate == true){
                     messageUpdate = false;
-
+					
+					messageLength = (messageInput->Length[0]<<8) | messageInput->Length[1];
+					mmuDebug("Frame data:");
+#if messageMU_DEBUG
+					for (i = 0; i < MESSAGE_HEADLENGTH; i++){
+						printf("0x%x-", tempBuffer[i]);
+					}
+					printf("\n");
+#endif
+					
+					mmuDebug("Check content!\n");
+					mmuDebug("Header:0x%2x-0x%2x\n",messageInput->Start[0], messageInput->Start[1]);
+					mmuDebug("Length:%d\n", messageLength);
                     if(messageInput->Start[0] == 0xAA && messageInput->Start[1] == 0x55){
-                        if(messageHeader <= 0x07){
-                            if(guartRingBuffer.count >= messageLength - MESSAGE_OFFSET){
-                                for(i = 0; i < messageLength - MESSAGE_OFFSET ; i++){
-                                    ringBuffer_Pop(&guartRingBuffer, &tempBuffer[MESSAGE_HEADLENGTH + i]);
-                                }
-                                updateLasted = false;
-                                checkNow = true;
-                                restartMessage = true;
-                            }
-                            else{
-                                updateLasted = true;
-                                restartMessage = false;
-                                checkNow = false;
-                            }
-                        }                            
+						mmuDebug("Header is OK\n");
+						if(guartRingBuffer.count >= messageLength){
+							for(i = 0; i < messageLength ; i++){
+								ringBuffer_Pop(&guartRingBuffer, &tempBuffer[MESSAGE_HEADLENGTH + i]);
+							}
+							mmuDebug("new Frame!\n");
+							updateLasted = false;
+							restartMessage = true;
+							checkNow = true;
+						}
+						else{
+							updateLasted = true;
+							restartMessage = false;
+							checkNow = false;
+						}                   
                     }
                     else{
-                        for (i = 0; i < MESSAGE_HEADLENGTH - 2; i++){
+						mmuDebug("Header is not OK. Moving data\n");
+                        for (i = 0; i < MESSAGE_HEADLENGTH - 1; i++){
                             tempBuffer[i] = tempBuffer[i+1];
                         }
 
@@ -74,8 +95,11 @@ void MessageProcess_Process(void){
                 }
             }
             else{
-                if(guartRingBuffer.count >= (messageLength - MESSAGE_OFFSET)){
-                    for(i = 0; i < (messageLength - MESSAGE_OFFSET); i++){
+				mmuDebug("Lasted update!\n");
+				mmuDebug("length Data:%d\n", guartRingBuffer.count);
+				mmuDebug("Header:0x%2x-0x%2x\n",messageInput->Start[0], messageInput->Start[1]);
+                if(guartRingBuffer.count >= (messageLength)){
+                    for(i = 0; i < (messageLength); i++){
                         ringBuffer_Pop(&guartRingBuffer, &tempBuffer[MESSAGE_HEADLENGTH + i]);
                     }
 
@@ -98,6 +122,7 @@ uint16_t MessageProcess_copyMessage (uint8_t *Message, uint8_t *header){
         return 0;
     }
 
+	checkNow = 0;
     *header = messageInput->Header;
     memcpy(Message, messageInput->Message, messageLength);
 

@@ -437,6 +437,16 @@
               <FileType>1</FileType>
               <FilePath>..\USER\Application\UART_Receive.c</FilePath>
             </File>
+            <File>
+              <FileName>MessageManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\MessageManager.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART_OTA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\UART_OTA.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -26,7 +26,7 @@ bool ringBuffer_Free(ringbuffer_t *bfData){
     return true;
 }
 
-bool ringBuffer_Push(ringbuffer_t *bfData, char byte){
+bool ringBuffer_Push(ringbuffer_t *bfData, uint8_t byte){
     if (bfData->count == bfData->capacity){
         return false;
     }
@@ -42,7 +42,7 @@ bool ringBuffer_Push(ringbuffer_t *bfData, char byte){
     return true;
 }
 
-bool ringBuffer_Pop(ringbuffer_t *bfData, char *byte){
+bool ringBuffer_Pop(ringbuffer_t *bfData, uint8_t *byte){
     if (bfData->count == 0)
     {
         return false;

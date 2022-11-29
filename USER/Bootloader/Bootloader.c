@@ -33,24 +33,6 @@ uint8_t Bootloader_CheckDiffVersion (void){
 
 }
 
-/**
- * @brief Get the checksum of the program. Read in the Flash.
- * 
- * @param prog Program need to read
- * @return uint8_t checksum value
- */
-static uint8_t Bootloader_GetCheckSum (bootProgram_t prog){
-	uint8_t checksum = 0;
-
-	if(prog == CurrentProg){
-		checksum = MemInterface_getCurrentCRC();
-	}
-	else{
-		checksum = MemInterface_getTempCRC();
-	}
-
-	return checksum;
-}
 
 /**
  * @brief Calculate the checksum of the program y reading whole program and calculated.

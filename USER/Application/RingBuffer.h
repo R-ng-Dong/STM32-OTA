@@ -24,8 +24,8 @@ typedef struct ringbuffer_t
 
 bool ringBuffer_Init(ringbuffer_t *bfData, uint8_t *Buffer, size_t capacity);
 bool ringBuffer_Free(ringbuffer_t *bfData);
-bool ringBuffer_Push(ringbuffer_t *bfData, char byte);
-bool ringBuffer_Pop(ringbuffer_t *bfData, char *byte);
+bool ringBuffer_Push(ringbuffer_t *bfData, uint8_t byte);
+bool ringBuffer_Pop(ringbuffer_t *bfData, uint8_t *byte);
 bool ringBuffer_IsEmpty(ringbuffer_t *bfData);
 bool ringBuffer_IsFull(ringbuffer_t *bfData);
 

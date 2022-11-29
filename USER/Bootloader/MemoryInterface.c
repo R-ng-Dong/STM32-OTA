@@ -8,6 +8,21 @@ void MemInterface_Init(void){
     Flash_InitData();
 }
 
+
+uint8_t MemInterface_calculateCRC (uint8_t *data, uint16_t len){
+    uint8_t crcCal = 0;
+    uint16_t i;
+
+
+    for (i = 0; i < len; i++){
+        crcCal = crcCal + data[i];
+    }
+
+    crcCal = 0xFF - crcCal;
+
+    return crcCal;
+}
+
 /* Information of Current firmware*/
 /**
  * @brief Get the version of the current firmware

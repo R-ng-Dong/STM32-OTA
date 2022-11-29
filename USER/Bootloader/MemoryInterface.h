@@ -30,6 +30,8 @@
 
 void MemInterface_Init(void);
 
+uint8_t MemInterface_calculateCRC (uint8_t *data, uint16_t len);
+
 /* Information of Current firmware*/
 uint32_t MemInterface_getCurrentVersion(void);
 void MemInterface_setCurrentVersion(uint32_t version);

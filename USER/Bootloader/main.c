@@ -3,6 +3,7 @@
 #include "../Peripheral/UART.h"
 #include "../Application/UART_Receive.h"
 #include "Bootloader.h"
+#include "../Application/UART_OTA.h"
 
 int main (void){
 	SystemInit();
@@ -15,6 +16,9 @@ int main (void){
 	
 	Bootloader_Init();
 	Bootloader_Processing();
+	
+	UART_OTA_Init();
+
 	/* Test Flash */
 	/*
 	printf("\n------------\nGo to proram!\n");
@@ -23,6 +27,9 @@ int main (void){
 	printf("Done!\n");
 	*/
 	while(1){
+		UART_OTA_Process();
+		UART_OTA_onLoop();
+		Fn_DELAY_ms(1);
 	}
 }
 

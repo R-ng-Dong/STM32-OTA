@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdint.h>
 #include "stm32f10x.h"                  // Device header
 #include "RTE_Components.h"             // Component selection
 #include "RTE_Device.h"                 // Keil::Device:Startup

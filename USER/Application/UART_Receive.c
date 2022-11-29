@@ -3,17 +3,17 @@
 
 #define MAXLENGTHSTRING_QDB (1024)
 
-static char uartDataBuffer[MAXLENGTHSTRING_QDB];
-static ringbuffer_t uartRingBuffer;
+static uint8_t uartDataBuffer[MAXLENGTHSTRING_QDB];
+ringbuffer_t guartRingBuffer;
 
 
 void uartReceive_Init(void){
-    ringBuffer_Init(&uartRingBuffer, uartDataBuffer, MAXLENGTHSTRING_QDB);
+    ringBuffer_Init(&guartRingBuffer, uartDataBuffer, MAXLENGTHSTRING_QDB);
 }
 
 
 void uartReceive_PushData(char data){
-    ringBuffer_Push(&uartRingBuffer, data);
+    ringBuffer_Push(&guartRingBuffer, data);
 }
 
 

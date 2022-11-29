@@ -1,6 +1,6 @@
 #include "Flash.h"
 
-static uint32_t tmpReadData[256];
+static uint32_t tmpReadData[FLASH_WORD_PER_BLOCK];
 
 void Flash_InitData (void){
 }
@@ -9,10 +9,11 @@ void Flash_InitData (void){
 uint8_t Flash_ReadBank (uint32_t address, uint32_t *data){
 	uint16_t i;
 	
+	flashDebug("Read:0x%x\n", address);
 	if((address % FLASH_BLOCK_SIZE) != 0){
 		return 1;
 	}
-	for (i = 0; i < 256; i++){
+	for (i = 0; i < FLASH_WORD_PER_BLOCK; i++){
 		*data = *(volatile uint32_t *)(address);
 		data++;
 		address += 4;
@@ -23,18 +24,24 @@ uint8_t Flash_ReadBank (uint32_t address, uint32_t *data){
 uint8_t Flash_WriteBank (uint32_t address, uint32_t *data){
 	uint16_t i;
 	
+	flashDebug("Write:0x%x\n", address);
 	if((address % FLASH_BLOCK_SIZE) != 0){
 		return 1;
 	}
 	
-	
+	flashDebug("Unlock\n");
 	FLASH_Unlock();
+	flashDebug("Clear\n");
 	FLASH_ErasePage(address);
-	for (i = 0; i < 256; i++){
-		FLASH_ProgramWord(address, *data);
+	flashDebug("Write\n");
+	for (i = 0; i < FLASH_WORD_PER_BLOCK; i++){
+		if(FLASH_ProgramWord(address, *data) != FLASH_COMPLETE){
+			flashDebug("Write Error\n");
+		}
 		address += 4;
 		data++;
 	}
+	flashDebug("Lock\n");
 	FLASH_Lock();
 	return 0;
 }

@@ -275,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0x2000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -413,14 +413,14 @@
               <FilePath>..\USER\Bootloader\main.c</FilePath>
             </File>
             <File>
-              <FileName>CopyProgram.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\Bootloader\CopyProgram.c</FilePath>
-            </File>
-            <File>
               <FileName>Bootloader.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\Bootloader\Bootloader.c</FilePath>
+            </File>
+            <File>
+              <FileName>MemoryInterface.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Bootloader\MemoryInterface.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -436,6 +436,16 @@
               <FileName>UART_Receive.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\Application\UART_Receive.c</FilePath>
+            </File>
+            <File>
+              <FileName>MessageManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\MessageManager.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART_OTA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Application\UART_OTA.c</FilePath>
             </File>
           </Files>
         </Group>

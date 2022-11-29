@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdint.h>
 #include "stm32f10x.h"                  // Device header
 #include "RTE_Components.h"             // Component selection
 #include "RTE_Device.h"                 // Keil::Device:Startup
@@ -8,7 +10,10 @@
 #include "stm32f10x_usart.h"            // Keil::Device:StdPeriph Drivers:USART
 
 #include "Delay.h"
-//#include "log.h"
-//#include "../Peripheral/UART.h"
+
+
+
+
+
 
 

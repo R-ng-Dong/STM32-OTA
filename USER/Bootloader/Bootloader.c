@@ -24,6 +24,11 @@ uint8_t Bootloader_CheckDiffVersion (void){
 	
 	currentVerion.dataFlash = MemInterface_getCurrentVersion();
 	nextVersion.dataFlash = MemInterface_getTempVersion();
+	
+	
+	bootloaderDebug("Current:%d.%d - Next:%d.%d\n", \
+					currentVerion.version.major, currentVerion.version.minor, \
+					nextVersion.version.major, nextVersion.version.minor);
 
 	if(currentVerion.dataFlash != nextVersion.dataFlash){
 		return 1;
@@ -58,6 +63,8 @@ static uint8_t Bootloader_CalCheckSum (bootProgram_t prog){
 		lengthProgram = Flash_ReadWord(BOOTLOADER_TEMP_LEN);
 		startDataAddress = TEMP_PROG_ADDRESS;
 	}
+	
+	bootloaderDebug("Length OTA file:%d\n", lengthProgram);
 
 	assert_param((startDataAddress % FLASH_BLOCK_SIZE) == 0);
 
@@ -72,8 +79,13 @@ static uint8_t Bootloader_CalCheckSum (bootProgram_t prog){
 		}
 		else{
 			lengthEndBlock = lengthProgram % FLASH_BLOCK_SIZE;
+//			bootloaderDebug("Data Check:");
 			for (countData = 0; countData < lengthEndBlock; countData++){
 				checkSum += pDataCheck[countData];
+//				if(countData % 16 == 0){
+//					printf("\n");
+//				}
+//				printf("%2x ", pDataCheck[countData]);
 			}
 		}
 	}
@@ -86,7 +98,7 @@ static uint8_t Bootloader_CalCheckSum (bootProgram_t prog){
  * @brief Go to the current program of IC.
  * 
  */
-static void 	Bootloader_GotoProgram (uint32_t address){
+void 	Bootloader_GotoProgram (uint32_t address){
 	void (*funcGotoProg)(void) = (void*)(*((volatile uint32_t*) (address + 4U)));
 	__set_MSP(*((volatile uint32_t*) address));
 	funcGotoProg();
@@ -106,6 +118,8 @@ uint8_t Bootloader_CopyTemp2Main (void){
 	saveCRC = MemInterface_getTempCRC();
 	calCRC = Bootloader_CalCheckSum(NextProg);
 	
+	bootloaderDebug("Before CRC:0x%2x-0x%2x\n", saveCRC, calCRC);
+	
 	if(saveCRC != calCRC){
 		return 1;
 	}
@@ -116,9 +130,10 @@ uint8_t Bootloader_CopyTemp2Main (void){
 	saveCRC = MemInterface_getTempCRC();
 	calCRC = Bootloader_CalCheckSum(CurrentProg);
 	
-	if(saveCRC != calCRC){
-		return 1;
-	}
+//	bootloaderDebug("After CRC:0x%2x-0x%2x\n", saveCRC, calCRC);
+//	if(saveCRC != calCRC){
+//		return 1;
+//	}
 	
 	versionFirmware = MemInterface_getTempVersion();
 	MemInterface_setCurrentVersion(versionFirmware);
@@ -154,10 +169,11 @@ void 	Bootloader_Processing (void){
 		else{
 			bootloaderDebug("Copy done!\n");
 		}
+		//NVIC_SystemReset();
 	}
 	else{
 		bootloaderDebug("Keep current version\n");
-		NVIC_SystemReset();
+		//Bootloader_RunProgram();
 	}
 }
 

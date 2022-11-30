@@ -104,7 +104,7 @@ void ota_sendFirmwareVerion (uint8_t major, uint8_t minor){
 void ota_sendFirmwareLength (uint32_t length){
     uint8_t dataSend[2];
 
-    dataSend[1] = length & 0xFF;    length <<= 8;
+    dataSend[1] = length & 0xFF;    length >>= 8;
     dataSend[0] = length & 0xFF;
 
     uint32_t lengthSum = MESSAGE_OFFSETLENGTH + 2;
@@ -139,7 +139,7 @@ void ota_sendReboot (void){
 
 uint8_t     bufferTemp[MAX_FRAME_SIZE];
 
-void ota_sendOTAFile (const char *fileOpen){
+void ota_sendOTAFile (const char *fileOpen, uint16_t major, uint16_t minor){
     uint32_t    sizeBinFile;
 
     printf("OTA Start!\n");
@@ -177,9 +177,9 @@ void ota_sendOTAFile (const char *fileOpen){
 
     /* Send Version */
     printf("Send version!\n");
-    ota_sendFirmwareVerion(0x01, 0x02);
+    ota_sendFirmwareVerion(major & 0xFF, minor & 0xFF);
 
     /* Reboot */
     printf("Reboot...\n");
-    ota_sendReboot();
+    //ota_sendReboot();
 }

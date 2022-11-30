@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 
-void comPort_Open(const char *comID);
+uint8_t comPort_Open(const char *comID);
 void comPort_Send (const uint8_t *dataSend, uint32_t length);
 void comPort_Close (void);
 

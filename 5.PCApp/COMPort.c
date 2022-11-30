@@ -5,7 +5,7 @@ static HANDLE hComm;
 static char comPortID[20] = "\\\\.\\";
 
 
-void comPort_Open(const char *comID){
+uint8_t comPort_Open(const char *comID){
     BOOL   Status; // Status
     DCB dcbSerialParams = { 0 };
 
@@ -20,16 +20,22 @@ void comPort_Open(const char *comID){
             0,            // Non Overlapped I/O
             NULL); 
     
-    if (hComm == INVALID_HANDLE_VALUE)
+    if (hComm == INVALID_HANDLE_VALUE){
         printf("Error in opening serial port\n");
-    else
+        return 1;
+    }
+    else{
         printf("Opening serial port successful\n");
+    }
+        
 
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
     Status = GetCommState(hComm, &dcbSerialParams); //retreives  the current settings
     if (Status == FALSE)
     {
         printf("\nError to Get the Com state\n\n");
+
+        return 1;
     }
 
     dcbSerialParams.BaudRate = CBR_115200;      // Setting BaudRate = 9600
@@ -47,10 +53,15 @@ void comPort_Open(const char *comID){
     timeouts.WriteTotalTimeoutConstant   = 50;
     timeouts.WriteTotalTimeoutMultiplier = 10;
 
-    if (SetCommTimeouts(hComm, &timeouts) == FALSE)
+    if (SetCommTimeouts(hComm, &timeouts) == FALSE){
         printf("\nError! in Setting Time Outs");
-    else
+        return 1;
+    }
+    else{
         printf("\nSetting Serial Port Timeouts Successfull");
+    }
+
+    return 0;
 }
 
 void comPort_Send (const uint8_t *dataSend, uint32_t length){

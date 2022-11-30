@@ -23,7 +23,7 @@ void ota_sendFirmwareVerion (uint8_t major, uint8_t minor);
 void ota_sendFirmwareLength (uint32_t length);
 void ota_sendFirmwareCRC (uint8_t crc);
 void ota_sendReboot (void);
-void ota_sendOTAFile (const char *fileOpen);
+void ota_sendOTAFile (const char *fileOpen, uint16_t major, uint16_t minor);
 
 
 #endif /* AEAC1D89_1DFE_4FFD_A2EB_B547E0CDDDD1 */

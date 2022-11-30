@@ -9,6 +9,7 @@ int main (void){
 	uint16_t i;
 	uint8_t dataTemp;
 	
+	
 	SystemInit();
 	SystemCoreClockUpdate();
 	
@@ -17,18 +18,27 @@ int main (void){
 	uartReceive_Init();
 	UARTDebug_AddCallBack((void *)(&uartReceive_PushData));
 	printf("\n------------\nGo to proram!\n");
-	//Bootloader_Init();
-	//Bootloader_Processing();
+	
+	Bootloader_Init();
+	Bootloader_Processing();
 	
 	UART_OTA_Init();
-
-	/* Test Flash */
-	/*
-	printf("\n------------\nGo to proram!\n");
-	MemInterface_writeProgram(ADDRESS_GO + FLASH_BLOCK_SIZE - 12, tmpData, 24);
-	MemInterface_copyProgram(MAIN_PROG_ADDRESS, TEMP_PROG_ADDRESS, 432);
-	printf("Done!\n");
-	*/
+	while(guartRingBuffer.count){
+		ringBuffer_Pop(&guartRingBuffer, &dataTemp);
+	}
+	printf("Wait for Event\n\
+			1 - Run\n\
+			2 - OTA!\n");
+	while(guartRingBuffer.count == 0);
+	ringBuffer_Pop(&guartRingBuffer, &dataTemp);
+	if(dataTemp == '1'){
+		printf("Run to program!\n");
+		Bootloader_RunProgram();
+	}
+	else{
+		printf("Run to OTA!\n");
+	}
+	//Bootloader_GotoProgram(TEMP_PROG_ADDRESS);
 	while(1){
 		UART_OTA_Process();
 		UART_OTA_onLoop();

@@ -38,7 +38,7 @@
 |0xAA|0x55|0x00|0x02|**0x02**|CRC|
 
 **Data OTA**
-|B01 |B02 |B03 |B04 |B05 |B07|B08|B09|B10|<>|Bn1|Bn|
+|B01 |B02 |B03 |B04 |B05 |B06|B07|B08|B9|<>|Bn1|Bn|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |0xAA|0x55|<>|<>|**0x03**|Location of Data|Location of Data|Nbr Bytes|Nbr Bytes|Data<4>|Checksum|CRC|
 

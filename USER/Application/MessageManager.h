@@ -23,8 +23,8 @@
 	#define mmuDebug(...)
 #endif
 
-#define TEMPBUFF_LENGTH		(261)
-#define MESSAGE_MAXLENGTH	(256)
+#define TEMPBUFF_LENGTH		(300)
+#define MESSAGE_MAXLENGTH	(290)
 #define MESSAGE_HEADLENGTH	(4)
 #define MESSAGE_OFFSET      (4)
 

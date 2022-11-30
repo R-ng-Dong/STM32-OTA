@@ -4,7 +4,7 @@
 #define MAXLENGTHSTRING_QDB (1024)
 
 static uint8_t uartDataBuffer[MAXLENGTHSTRING_QDB];
-ringbuffer_t guartRingBuffer;
+volatile ringbuffer_t guartRingBuffer;
 
 
 void uartReceive_Init(void){

@@ -24,8 +24,8 @@
 typedef union {
     uint32_t dataFlash;
     struct {
+		uint16_t minor;
         uint16_t major;
-        uint16_t minor;
     } version;
 } bootVersion_t;
 
@@ -46,6 +46,7 @@ typedef enum{
 
 void    Bootloader_Init (void);
 uint8_t Bootloader_CheckDiffVersion (void);
+void 	Bootloader_GotoProgram (uint32_t address);
 void 	Bootloader_RunProgram (void);
 uint8_t Bootloader_CopyTemp2Main (void);
 void 	Bootloader_Processing (void);

@@ -30,7 +30,7 @@ uint32_t fileManager_getSize(void){
     fseek(ptrFile, 0, SEEK_END);
     fileSize = ftell(ptrFile);
     fseek(ptrFile, 0, SEEK_SET);
-    printf("Size file:%d\n", fileSize);
+    //printf("Size file:%d\n", fileSize);
 
     return fileSize;
 }

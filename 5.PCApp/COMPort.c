@@ -5,7 +5,7 @@ static HANDLE hComm;
 static char comPortID[20] = "\\\\.\\";
 
 
-void comPort_Open(const char *comID){
+uint8_t comPort_Open(const char *comID){
     BOOL   Status; // Status
     DCB dcbSerialParams = { 0 };
 
@@ -20,16 +20,22 @@ void comPort_Open(const char *comID){
             0,            // Non Overlapped I/O
             NULL); 
     
-    if (hComm == INVALID_HANDLE_VALUE)
+    if (hComm == INVALID_HANDLE_VALUE){
         printf("Error in opening serial port\n");
-    else
+        return 1;
+    }
+    else{
         printf("Opening serial port successful\n");
+    }
+        
 
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
     Status = GetCommState(hComm, &dcbSerialParams); //retreives  the current settings
     if (Status == FALSE)
     {
         printf("\nError to Get the Com state\n\n");
+
+        return 1;
     }
 
     dcbSerialParams.BaudRate = CBR_115200;      // Setting BaudRate = 9600
@@ -47,39 +53,33 @@ void comPort_Open(const char *comID){
     timeouts.WriteTotalTimeoutConstant   = 50;
     timeouts.WriteTotalTimeoutMultiplier = 10;
 
-    if (SetCommTimeouts(hComm, &timeouts) == FALSE)
-        printf("\n   Error! in Setting Time Outs");
-    else
-        printf("\n\n Setting Serial Port Timeouts Successfull");
+    if (SetCommTimeouts(hComm, &timeouts) == FALSE){
+        printf("\nError! in Setting Time Outs");
+        return 1;
+    }
+    else{
+        printf("\nSetting Serial Port Timeouts Successfull");
+    }
 
-
-    char   lpBuffer[] = "A";		       // lpBuffer should be  char or byte array, otherwise write wil fail
-    DWORD  dNoOFBytestoWrite;              // No of bytes to write into the port
-    DWORD  dNoOfBytesWritten = 0;          // No of bytes written to the port
-    
-    dNoOFBytestoWrite = sizeof(lpBuffer); // Calculating the no of bytes to write into the port
-
-    Status = WriteFile(hComm,               // Handle to the Serialport
-                        lpBuffer,            // Data to be written to the port 
-                        dNoOFBytestoWrite,   // No of bytes to write into the port
-                        &dNoOfBytesWritten,  // No of bytes written to the port
-                        NULL);
-
-    if (Status == TRUE)
-        printf("\n\n    %s - Written to %s", lpBuffer, comPortID);
-    else
-        printf("\n\n   Error %d in Writing to Serial Port",GetLastError());
+    return 0;
 }
 
 void comPort_Send (const uint8_t *dataSend, uint32_t length){
-    if(length % 4 != 0){
-        printf("Wrong length of Data!\n");
-        return;
-    }
+    BOOL    Status;
+    DWORD   nbrWrittenBytes;
 
-    for (uint32_t i= 0; i < length; i++){
+    
 
-    }
+    Status = WriteFile( hComm,               // Handle to the Serialport
+                        dataSend,            // Data to be written to the port 
+                        length,   // No of bytes to write into the port
+                        &nbrWrittenBytes,  // No of bytes written to the port
+                        NULL);
+
+    // if (Status == TRUE)
+    //     printf("\n\n    %s - Written to %s", lpBuffer, comPortID);
+    // else
+    //     printf("\n\n   Error %d in Writing to Serial Port",GetLastError());
 }
 
 void comPort_Close (void){

@@ -11,3 +11,6 @@ $(TARGET): $(OBJFILES)
 
 clean:
 	del $(OBJFILES) $(TARGET)
+
+cleanTmp:
+	del $(OBJFILES)

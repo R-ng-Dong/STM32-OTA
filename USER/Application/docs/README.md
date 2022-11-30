@@ -14,7 +14,6 @@
 
 > CRC: Checksum of Data 0xFF - (B03 + B04 + ... + B0n-1)
 
----
 ### List of header
 |Header ID|Role|
 |:---:|:---:|

@@ -1,3 +1,13 @@
+/**
+ * @file MemoryInterface.h
+ * @author DuanLC (duanlc@ptit.edu.vn)
+ * @brief 
+ * @version 0.1
+ * @date 2022-11-30
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #ifndef _MEMORY_INTERFACE_
 #define _MEMORY_INTERFACE_
 

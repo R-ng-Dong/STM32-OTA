@@ -6,6 +6,11 @@ static uint8_t headerReceived;
 static uint16_t lengthMessage;
 static otaDataFrame_t *refDataFrame;
 
+
+/**
+ * @brief Initialize resources for UART OTA process
+ * 
+ */
 void UART_OTA_Init(void){
     otaDebug("Init process!\n");
     MessageProcess_Init();
@@ -14,6 +19,11 @@ void UART_OTA_Init(void){
 }
 
 
+/**
+ * @brief Pre-process before write data to the Flash memory
+ * 
+ * @param lengthInput number of bytes need to be write
+ */
 static void OTA_ProcessDataMessage (uint16_t lengthInput){
 	uint32_t locationData;
     uint16_t lengthData;
@@ -54,6 +64,10 @@ static void OTA_ProcessDataMessage (uint16_t lengthInput){
 	otaDebug("Flash done!\n");
 }
 
+/**
+ * @brief Write the CRC information to the Flash memory
+ * 
+ */
 static void OTA_ProcessCRCMessage (void){
     uint8_t crc;
 
@@ -62,6 +76,10 @@ static void OTA_ProcessCRCMessage (void){
     MemInterface_setTempCRC(crc);
 }
 
+/**
+ * @brief Write the length of program information to the Flash memory
+ * 
+ */
 static void OTA_ProcessLengthMessage (void){
     uint16_t length;
 
@@ -70,6 +88,10 @@ static void OTA_ProcessLengthMessage (void){
     MemInterface_setTempFirmLength(length);
 }
 
+/**
+ * @brief Write the version of program information to the Flash memory
+ * 
+ */
 static void OTA_ProcessVersionMessage (void){
     uint16_t major, minor;
     uint32_t version;
@@ -81,7 +103,10 @@ static void OTA_ProcessVersionMessage (void){
     MemInterface_setTempVersion(version);
 }
 
-
+/**
+ * @brief Main OTA process. Read the command, message and write to the Flash memory
+ * 
+ */
 void UART_OTA_Process(void){
     if(MessageProcess_hasMessage()){
         lengthMessage = MessageProcess_copyMessage(dataReceived, &headerReceived);
@@ -129,6 +154,10 @@ void UART_OTA_Process(void){
     }
 }
 
+/**
+ * @brief On loop function for check the Input command
+ * 
+ */
 void UART_OTA_onLoop(void){
     MessageProcess_Process();
 }

@@ -1,7 +1,7 @@
 /**
  * @file MessageManager.h
  * @author Duan Luong (duanlc@ptit.edu.vn)
- * @brief 
+ * @brief Contains functions demo write OTA data to the Flash of MCU through UART command. Includes: Data program, Version, Length, and CRC.
  * @version 0.1
  * @date 2022-11-29
  * 

@@ -1,7 +1,7 @@
 /**
  * @file UART_OTA.h
  * @author your name (you@domain.com)
- * @brief 
+ * @brief OTA through UART program
  * @version 0.1
  * @date 2022-11-29
  * 

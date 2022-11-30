@@ -4,11 +4,21 @@
 static uint32_t tmpMemoryData[FLASH_WORD_PER_BLOCK];
 static uint32_t tmpBackupData[FLASH_WORD_PER_BLOCK];
 
+/**
+ * @brief Initialize memory interface
+ * 
+ */
 void MemInterface_Init(void){
     Flash_InitData();
 }
 
-
+/**
+ * @brief Calculate the CRC of a frame data
+ * 
+ * @param data buffer contains data
+ * @param len length of the buffer
+ * @return uint8_t CRC value
+ */
 uint8_t MemInterface_calculateCRC (uint8_t *data, uint16_t len){
     uint8_t crcCal = 0;
     uint16_t i;

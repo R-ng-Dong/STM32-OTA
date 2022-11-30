@@ -1,9 +1,0 @@
-.\objects\ringbuffer.o: ..\USER\Application\RingBuffer.c
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\ringbuffer.o: ..\USER\Application\RingBuffer.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\ringbuffer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

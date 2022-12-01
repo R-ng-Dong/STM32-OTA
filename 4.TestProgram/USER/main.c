@@ -17,11 +17,21 @@ int main (void){
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
-	Fn_DELAY_ms(1000);
 	
 	while(1){
+		GPIO_ResetBits(GPIOE, GPIO_Pin_All);
+		Fn_DELAY_ms(500);
 		for (i = 0; i < 8; i++){
-			GPIO_ResetBits(GPIOE, GPIO_Pin_All);
+			//GPIO_ResetBits(GPIOE, GPIO_Pin_All);
+			GPIO_SetBits(GPIOE, GPIO_Pin_8 << i);
+			//GPIO_SetBits(GPIOE, GPIO_Pin_15 >> i);
+			Fn_DELAY_ms(500);
+		}
+		
+		GPIO_ResetBits(GPIOE, GPIO_Pin_All);
+		Fn_DELAY_ms(500);
+		for (i = 0; i < 8; i++){
+			//GPIO_ResetBits(GPIOE, GPIO_Pin_All);
 			//GPIO_SetBits(GPIOE, GPIO_Pin_8 << i);
 			GPIO_SetBits(GPIOE, GPIO_Pin_15 >> i);
 			Fn_DELAY_ms(500);
